@@ -1,15 +1,23 @@
-# Mon carnet de dépenses
+# Carnet de dépenses
 
-Carnet personnel en français pour les charges fixes, les abonnements, les achats quotidiens et les revenus, avec un bilan mensuel et un historique du reste du salaire. Interface sombre adaptée au mobile et à l’ordinateur.
+Carnet de budget en français avec charges fixes, abonnements, dépenses quotidiennes, revenus et suivi du reste du salaire. Thème sombre et interface adaptée au mobile.
 
-Site en service : https://mon-carnet-depenses.xelisa44.chatgpt.site
+## GitHub Pages
+
+La version prête à publier est dans `docs/`.
+
+Dans **Settings → Pages**, choisir **Deploy from a branch**, puis **main** et **/docs**, et enregistrer. Adresse prévue : https://nyastur.github.io/carnet-depenses/
+
+Avec GitHub Free, Pages nécessite un dépôt public. Le dépôt contient uniquement le code, sans données financières ni codes personnels.
 
 ## Sauvegarde
 
-Les données sont conservées dans une base Cloudflare D1. Ce dépôt contient uniquement le code et les migrations, sans données financières personnelles ni clés secrètes.
+Le navigateur chiffre les données en AES-256-GCM avant leur sauvegarde dans Firebase (projet `carnet-films`, collection `expenseVaultsV1`). Chaque carnet possède un code aléatoire de 256 bits, présent dans son lien personnel et sur l’appareil qui l’ouvre. Conserver ce lien : aucun mécanisme de récupération du code n’est prévu. Le bouton « Mon lien personnel » permet de le copier pour un autre appareil.
 
-## Environnement
+Les écritures utilisent les préconditions Firestore pour éviter les écrasements lors de modifications simultanées. Les erreurs conservent le formulaire.
 
-Application React / Vinext, exécutée sur Cloudflare Workers. Installation avec pnpm, puis `pnpm build`. La liaison de base de données s’appelle `DB`. Le schéma et les migrations sont dans `db/` et `drizzle/`.
+## Compilation
 
-GitHub Pages seul ne peut pas exécuter l’API et la base de données de ce projet. La copie du code sur GitHub ne déplace pas les données ni l’hébergement actuel.
+`pnpm install`, puis `pnpm build:pages`. Ajouter les fichiers générés dans `docs/` et `docs/.nojekyll` au dépôt pour actualiser le site.
+
+Les anciens fichiers API et Cloudflare sont archivés, ils ne sont pas utilisés par GitHub Pages. Le site précédent et ses données restent disponibles pendant la migration. La migration des données n’est pas encore effectuée.
